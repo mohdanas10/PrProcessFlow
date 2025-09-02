@@ -1,0 +1,185 @@
+package com.PrProcessFlow.PrProcessFlow.Services;
+
+
+import com.PrProcessFlow.PrProcessFlow.Entity.Pr;
+import com.PrProcessFlow.PrProcessFlow.Entity.WorkCategory;
+import com.PrProcessFlow.PrProcessFlow.Repository.PrRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Component;
+
+import java.awt.print.Pageable;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Component
+public class PrServices {
+
+    @Autowired
+    private PrRepo prRepo;
+
+    public String addPr(Pr pr){
+        String requestId = generateRequestId();
+//        System.out.println(pr);
+
+        for (WorkCategory category : pr.getWorkCategory()) {
+
+            System.out.println(category.getCategoryName());
+            Pr newPr = new Pr();
+            newPr.setRequestedBy(pr.getRequestedBy());
+            newPr.setRequestedEmail(pr.getRequestedEmail());
+            newPr.setRequestedDate(pr.getRequestedDate());
+            newPr.setState(pr.getState());
+            newPr.setCityName(pr.getCityName());
+            newPr.setStoreType(pr.getStoreType());
+            newPr.setProjectStoreId(pr.getProjectStoreId());
+            newPr.setStoreName(pr.getStoreName());
+            newPr.setPrWorkCategory(category.getCategoryName()); // save only category name
+            newPr.setRequestId(requestId);
+            newPr.setPrStatus("Pending");
+            this.prRepo.save(newPr);
+
+
+        }
+        return "PR created successfully with Request ID: " + requestId;
+    }
+
+    private String generateRequestId() {
+        Date now = new Date();
+        String month = new SimpleDateFormat("MMM").format(now).toUpperCase(); // AUG
+        String year = new SimpleDateFormat("yy").format(now); // 25
+
+        long count = prRepo.countCurrentMonthEntries() + 1;
+        String sequence = String.format("%03d", count);
+        return String.format("REQ/%s%s/%s", month, year, sequence);
+    }
+
+    public List<Pr> getPendingPr(){
+        List<Pr> allPr = this.prRepo.findAllByOrderByIdDesc();
+        List<Pr> pendingPr = new ArrayList<>();
+        if(allPr.isEmpty()){
+            return null;
+        }
+        else {
+            for(Pr pr : allPr){
+                if(pr.getPrStatus().equals("Pending")){
+                    pendingPr.add(pr);
+                }
+            }
+            return pendingPr;
+        }
+
+    }
+
+    public List<Pr> getRaisedPr(int page, int size){
+        return prRepo
+                .findByPrStatusOrderByIdDesc("Raised", PageRequest.of(page, size))
+                .getContent();
+    }
+
+    public List<Pr> getRaisedPrForTeam(){
+        return this.prRepo.findAllByPrStatusOrderByIdDesc("Raised");
+
+    }
+
+    public String raisePr(Pr pr){
+        if(pr == null){
+            return "Please enter the pr details ";
+        }
+
+            int raisePrId = pr.getId();
+        System.out.println(raisePrId);
+
+            Pr updatedPr = prRepo.findById(raisePrId);
+        System.out.println(updatedPr);
+            int currentPrId = updatedPr.getId();
+            if(currentPrId ==  raisePrId){
+
+                updatedPr.setPrStatus("Raised");
+                updatedPr.setPrCreator(pr.getPrCreator());
+                updatedPr.setPrCreationDate(pr.getPrCreationDate());
+                updatedPr.setVendorName(pr.getVendorName());
+                updatedPr.setIsPrRejected(pr.getIsPrRejected());
+                updatedPr.setRejectedReason(pr.getRejectedReason());
+                updatedPr.setIsPrWithdraw(pr.getIsPrWithdraw());
+                updatedPr.setWithdrawReason(pr.getWithdrawReason());
+                updatedPr.setOldPrNo(pr.getOldPrNo());
+                updatedPr.setRemarks1(pr.getRemarks1());
+                updatedPr.setRemarks2(pr.getRemarks2());
+                updatedPr.setPrNo(pr.getPrNo());
+                updatedPr.setPrCreationReportDate(new Date());
+                prRepo.save(updatedPr);
+                return "PR updated successfully with Request ID: " + pr.getId();
+
+            }
+            return "PR Updation Failed ::: ";
+
+
+    }
+
+    public String updatePr(Pr pr){
+        Pr updatedPr = prRepo.findById(pr.getId());
+        System.out.println(updatedPr);
+        if(updatedPr.getId() == pr.getId()){
+            System.out.println(pr);
+            updatedPr.setPrNo(pr.getPrNo());
+            updatedPr.setPrCreator(pr.getPrCreator());
+            updatedPr.setPrCreationDate(pr.getPrCreationDate());
+            updatedPr.setVendorName(pr.getVendorName());
+            updatedPr.setIsPrRejected(pr.getIsPrRejected());
+            updatedPr.setRejectedReason(pr.getRejectedReason());
+            updatedPr.setIsPrWithdraw(pr.getIsPrWithdraw());
+            updatedPr.setWithdrawReason(pr.getWithdrawReason());
+            updatedPr.setOldPrNo(pr.getOldPrNo());
+            updatedPr.setRemarks1(pr.getRemarks1());
+            updatedPr.setRemarks2(pr.getRemarks2());
+
+
+            this.prRepo.save(updatedPr);
+            return "PR updated successfully with Request ID: " + pr.getId();
+        }
+        return "PR Updation Failed ::: ";
+    }
+
+    public List<Pr> getAllPr (){
+        return this.prRepo.findAll();
+    }
+
+    public List<Pr> getPrByDate(String fromDate, String toDate){
+        List<Pr> allPr = prRepo.findAllByOrderByIdDesc();
+        if (fromDate != null && toDate != null) {
+            return allPr.stream()
+                    .filter(pr -> pr.getPrCreationDate() != null &&
+                            pr.getPrCreationDate().compareTo(fromDate) >= 0 &&
+                            pr.getPrCreationDate().compareTo(toDate) <= 0)
+                    .collect(Collectors.toList());
+        }
+
+        return allPr;
+
+    }
+
+    public String deletePr (int id ){
+        Pr pr = prRepo.findById(id);
+        if(pr != null){
+            prRepo.delete(pr);
+            return "PR deleted successfully with Request ID: " + pr.getRequestId();
+        }
+        else {
+            return "PR Deletion Failed ::: ";
+        }
+    }
+
+
+
+
+
+    
+
+
+
+}
