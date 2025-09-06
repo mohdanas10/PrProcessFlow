@@ -36,6 +36,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**", "/login").permitAll()
+//                        .requestMatchers("/get-request-id").permitAll()
                         .requestMatchers("/get-single-file/**", "/get-files/**").permitAll()
                         .requestMatchers("/get-users").hasRole("ADMIN")
                         .anyRequest().authenticated()
@@ -48,7 +49,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://zepto-pr-process.netlify.app/")); // your React app
+        configuration.setAllowedOrigins(List.of("http://localhost:5173/")); // your React app
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true); // if you ever send cookies

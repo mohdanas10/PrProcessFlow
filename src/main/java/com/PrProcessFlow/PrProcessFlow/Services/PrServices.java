@@ -23,7 +23,7 @@ public class PrServices {
     private PrRepo prRepo;
 
     public String addPr(Pr pr){
-        String requestId = generateRequestId();
+
 //        System.out.println(pr);
 
         for (WorkCategory category : pr.getWorkCategory()) {
@@ -39,24 +39,15 @@ public class PrServices {
             newPr.setProjectStoreId(pr.getProjectStoreId());
             newPr.setStoreName(pr.getStoreName());
             newPr.setPrWorkCategory(category.getCategoryName()); // save only category name
-            newPr.setRequestId(requestId);
+            newPr.setRequestId(pr.getRequestId());
             newPr.setPrStatus("Pending");
             this.prRepo.save(newPr);
 
 
         }
-        return "PR created successfully with Request ID: " + requestId;
+        return "PR created successfully with Request ID: " + pr.getRequestId();
     }
 
-    private String generateRequestId() {
-        Date now = new Date();
-        String month = new SimpleDateFormat("MMM").format(now).toUpperCase(); // AUG
-        String year = new SimpleDateFormat("yy").format(now); // 25
-
-        long count = prRepo.countCurrentMonthEntries() + 1;
-        String sequence = String.format("%03d", count);
-        return String.format("REQ/%s%s/%s", month, year, sequence);
-    }
 
     public List<Pr> getPendingPr(){
         List<Pr> allPr = this.prRepo.findAllByOrderByIdDesc();

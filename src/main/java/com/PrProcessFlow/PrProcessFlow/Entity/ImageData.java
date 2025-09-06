@@ -11,15 +11,12 @@ import lombok.*;
 @Builder
 @ToString
 public class ImageData {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String name;
-    private String type;
-
-    @Lob
-    @Column(columnDefinition = "LONGBLOB")
-    private byte[] imageData;
-    private String requestId;
+    private String requestId;   // Unique PR request ID
+    private String name;        // Original file name
+    private String type;        // MIME type
+    private String url;         // Cloudinary URL (instead of blob)
 }
