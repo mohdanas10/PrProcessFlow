@@ -46,4 +46,5 @@ public class Pr {
     private String prCreationDate;
     private String vendorName;
     private String prWorkCategory;
+    private String layoutApprovalDate;
 }
