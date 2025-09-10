@@ -40,6 +40,7 @@ public class PrServices {
             newPr.setStoreName(pr.getStoreName());
             newPr.setPrWorkCategory(category.getCategoryName()); // save only category name
             newPr.setRequestId(pr.getRequestId());
+            newPr.setLayoutApprovalDate(pr.getLayoutApprovalDate());
             newPr.setPrStatus("Pending");
             this.prRepo.save(newPr);
 
@@ -157,7 +158,7 @@ public class PrServices {
     public String deletePr (int id ){
         Pr pr = prRepo.findById(id);
         if(pr != null){
-            prRepo.delete(pr);
+            this.prRepo.delete(pr);
             return "PR deleted successfully with Request ID: " + pr.getRequestId();
         }
         else {

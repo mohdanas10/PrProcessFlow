@@ -16,7 +16,7 @@ public class PrController {
 
     @PostMapping("/add-pr-request")
     public String addPr(@RequestBody Pr pr){
-
+        System.out.println(pr.getLayoutApprovalDate());
         return  this.prServices.addPr(pr);
     }
 
