@@ -42,6 +42,7 @@ public class PrServices {
             newPr.setRequestId(pr.getRequestId());
             newPr.setLayoutApprovalDate(pr.getLayoutApprovalDate());
             newPr.setPrStatus("Pending");
+            newPr.setDepartment(pr.getDepartment());
             this.prRepo.save(newPr);
 
 
