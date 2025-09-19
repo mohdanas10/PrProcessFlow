@@ -43,6 +43,8 @@ public class PrServices {
             newPr.setLayoutApprovalDate(pr.getLayoutApprovalDate());
             newPr.setPrStatus("Pending");
             newPr.setDepartment(pr.getDepartment());
+            newPr.setRemarks1(pr.getRemarks1());
+            newPr.setMailSubject(pr.getMailSubject());
             this.prRepo.save(newPr);
 
 
@@ -69,14 +71,14 @@ public class PrServices {
     }
 
     public List<Pr> getRaisedPr(int page, int size){
-        return prRepo
-                .findByPrStatusOrderByIdDesc("Raised", PageRequest.of(page, size))
+        List<String> statuses = List.of("Raised", "Cancelled", "Rejected");
+        return prRepo.findByPrStatusInOrderByIdDesc(statuses, PageRequest.of(page, size))
                 .getContent();
     }
 
     public List<Pr> getRaisedPrForTeam(){
-        return this.prRepo.findAllByPrStatusOrderByIdDesc("Raised");
-
+        List<String> statuses = List.of("Raised", "Cancelled", "Rejected");
+        return prRepo.findByPrStatusInOrderByIdDesc(statuses);
     }
 
     public String raisePr(Pr pr){
@@ -130,6 +132,8 @@ public class PrServices {
             updatedPr.setOldPrNo(pr.getOldPrNo());
             updatedPr.setRemarks1(pr.getRemarks1());
             updatedPr.setRemarks2(pr.getRemarks2());
+            updatedPr.setPrStatus(pr.getPrStatus());
+            updatedPr.setCancelReason(pr.getCancelReason());
 
 
             this.prRepo.save(updatedPr);
@@ -137,6 +141,8 @@ public class PrServices {
         }
         return "PR Updation Failed ::: ";
     }
+
+
 
     public List<Pr> getAllPr (){
         return this.prRepo.findAll();

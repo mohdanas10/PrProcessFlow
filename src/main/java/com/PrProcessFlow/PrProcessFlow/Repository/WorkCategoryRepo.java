@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface WorkCategoryRepo extends JpaRepository<WorkCategory, Integer> {
     public WorkCategory findByCategoryName(String name);
     public WorkCategory findById(int id);
+    public WorkCategory findByCategoryType(String categoryType);
 }

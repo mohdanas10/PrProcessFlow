@@ -20,5 +20,8 @@ public interface PrRepo extends JpaRepository<Pr, Integer> {
     long countCurrentMonthEntries();
     List<Pr> findAllByOrderByIdDesc();
     List<Pr>findAllByPrStatusOrderByIdDesc(String prStatus);
+    Page<Pr> findAllByOrderByIdDesc(Pageable pageable);
+    Page<Pr> findByPrStatusInOrderByIdDesc(List<String> statuses, Pageable pageable);
+    List<Pr> findByPrStatusInOrderByIdDesc(List<String> statuses);
 
 }

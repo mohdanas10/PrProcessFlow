@@ -16,8 +16,13 @@ public class WorkCategoryServices {
     public String addWorkCategory(List<WorkCategory> workCategory){
 
        for(WorkCategory wc : workCategory){
+           List<WorkCategory> allCategories = this.workCategoryRepo.findAll();
            WorkCategory isExists = this.workCategoryRepo.findByCategoryName(wc.getCategoryName());
-           if(isExists == null){
+           WorkCategory isCategoryTypeExists = this.workCategoryRepo.findByCategoryType(wc.getCategoryType());
+           if(isExists == null && isCategoryTypeExists == null){
+               this.workCategoryRepo.save(wc);
+           }
+           else if(isExists != null && isCategoryTypeExists == null){
                this.workCategoryRepo.save(wc);
            }
 

@@ -48,4 +48,6 @@ public class Pr {
     private String prWorkCategory;
     private String layoutApprovalDate;
     private String department;
+    private String mailSubject;
+    private String cancelReason;
 }

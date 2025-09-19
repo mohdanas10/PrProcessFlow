@@ -35,11 +35,11 @@ public class SecurityConfig {
                 .cors(withDefaults())  // ✅ tell Spring Security to use your corsConfigurationSource
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/login").permitAll()
+                                .requestMatchers("/auth/**", "/login").permitAll()
 //                        .requestMatchers("/get-request-id").permitAll()
-                        .requestMatchers("/get-single-file/**", "/get-files/**").permitAll()
-                        .requestMatchers("/get-users").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+                                .requestMatchers("/get-single-file/**", "/get-files/**").permitAll()
+                                .requestMatchers("/get-users").hasRole("ADMIN")
+                                .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -51,6 +51,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 //        configuration.setAllowedOrigins(List.of("https://zepto-pr-process.netlify.app/")); // your React app
         configuration.setAllowedOrigins(List.of("https://zepto-pr-process.netlify.app/"));
+//        configuration.setAllowedOrigins(List.of("http://localhost:5173/"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true); // if you ever send cookies

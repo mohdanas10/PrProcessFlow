@@ -16,6 +16,10 @@ public class WorkCategoryController {
 
     @PostMapping("/add-work-category")
     public String addWorkCategory(@RequestBody List<WorkCategory> workCategory){
+        for(WorkCategory wc : workCategory){
+            System.out.println(wc.getCategoryName());
+            System.out.println(wc.getCategoryType());
+        }
         return this.workCategoryServices.addWorkCategory(workCategory);
     }
 

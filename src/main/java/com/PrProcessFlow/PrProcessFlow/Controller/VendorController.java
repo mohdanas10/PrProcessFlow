@@ -19,6 +19,18 @@ public class VendorController {
         return this.vendorServices.addVendor(vendorList);
     }
 
+    @PostMapping("/add-single-vendor")
+    public String addSingleVendor(@RequestBody Vendor vendor){
+        return this.vendorServices.addSingleVendor(vendor);
+    }
+    @PutMapping("/update-bulk-vendor")
+    public String updateVendor( @RequestBody Vendor vendor){
+        System.out.println(vendor.getVendorName());
+        System.out.println(vendor.getVendorCode());
+        System.out.println(vendor.getVendorCategory());
+        return this.vendorServices.updateVendor(vendor);
+    }
+
     @GetMapping("/get-vendors")
     public List<Vendor> getVendors(){
         return this.vendorServices.getVendors();
@@ -28,5 +40,10 @@ public class VendorController {
     @GetMapping("/get-secret-key")
     public String getSecretKey(){
         return "Anas@Zeptonow@580";
+    }
+
+    @DeleteMapping("/delete-vendor/{id}")
+    public String deleteVendor (@PathVariable int id){
+        return this.vendorServices.deleteVendor(id);
     }
 }
