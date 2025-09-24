@@ -38,7 +38,8 @@ public class CostCenterServices {
     }
 
     public String deleteCostCenterById(int id){
-        this.costCenterRepo.findById(id);
+        CostCenter cs = this.costCenterRepo.findById(id);
+        this.costCenterRepo.delete(cs);
         return "cost Center Deleted Successfully";
     }
 
