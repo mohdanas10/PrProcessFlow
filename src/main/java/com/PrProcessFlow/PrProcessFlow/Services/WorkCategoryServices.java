@@ -25,6 +25,11 @@ public class WorkCategoryServices {
            else if(isExists != null && isCategoryTypeExists == null){
                this.workCategoryRepo.save(wc);
            }
+           else if(isExists == null && isCategoryTypeExists != null){
+               this.workCategoryRepo.save(wc);
+           }
+
+
 
        }
 

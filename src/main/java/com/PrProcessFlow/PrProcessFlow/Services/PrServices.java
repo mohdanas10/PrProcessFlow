@@ -71,13 +71,13 @@ public class PrServices {
     }
 
     public List<Pr> getRaisedPr(int page, int size){
-        List<String> statuses = List.of("Raised", "Cancelled", "Rejected");
+        List<String> statuses = List.of("Raised", "Cancelled", "Rejected","Withdrawn");
         return prRepo.findByPrStatusInOrderByIdDesc(statuses, PageRequest.of(page, size))
                 .getContent();
     }
 
     public List<Pr> getRaisedPrForTeam(){
-        List<String> statuses = List.of("Raised", "Cancelled", "Rejected");
+        List<String> statuses = List.of("Raised", "Cancelled", "Rejected", "Withdrawn");
         return prRepo.findByPrStatusInOrderByIdDesc(statuses);
     }
 
