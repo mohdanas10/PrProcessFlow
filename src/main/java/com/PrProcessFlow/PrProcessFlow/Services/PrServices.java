@@ -45,6 +45,7 @@ public class PrServices {
             newPr.setDepartment(pr.getDepartment());
             newPr.setRemarks1(pr.getRemarks1());
             newPr.setMailSubject(pr.getMailSubject());
+            newPr.setSubCategory(pr.getSubCategory());
             this.prRepo.save(newPr);
 
 
