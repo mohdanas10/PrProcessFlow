@@ -41,4 +41,8 @@ public class CostCenterController {
     public String updateCostCenter(@PathVariable int id, @RequestBody CostCenter costCenter){
         return this.costCenterServices.updateCostCenter(id, costCenter);
     }
+    @GetMapping("/get-new-site")
+    public List<CostCenter> newCostCenter(){
+        return this.costCenterServices.newCostCenter();
+    }
 }

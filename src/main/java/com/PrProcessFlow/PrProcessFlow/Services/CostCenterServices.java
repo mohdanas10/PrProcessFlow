@@ -60,4 +60,8 @@ public class CostCenterServices {
         }
         return "Error to update cost Center !!";
     }
+
+    public List<CostCenter> newCostCenter(){
+        return this.costCenterRepo.findTop5ByOrderByIdDesc();
+    }
 }

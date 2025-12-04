@@ -13,4 +13,5 @@ public interface CostCenterRepo extends JpaRepository<CostCenter, Integer> {
     public CostCenter findByStoreCode(String storeCode);
     public CostCenter findById(int id);
     List<CostCenter> findAllByOrderByIdDesc();
+    List<CostCenter> findTop5ByOrderByIdDesc();
 }
