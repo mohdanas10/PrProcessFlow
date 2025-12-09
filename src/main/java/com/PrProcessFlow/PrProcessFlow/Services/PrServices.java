@@ -175,6 +175,12 @@ public class PrServices {
         }
     }
 
+    public List<Pr> getFivePr(){
+        List<Pr> prList = this.prRepo.findLast5UniqueStoreName();
+        System.out.println(prList);
+        return prList;
+    }
+
 
 
 

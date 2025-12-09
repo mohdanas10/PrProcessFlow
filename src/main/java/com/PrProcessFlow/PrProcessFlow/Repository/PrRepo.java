@@ -1,5 +1,6 @@
 package com.PrProcessFlow.PrProcessFlow.Repository;
 
+import com.PrProcessFlow.PrProcessFlow.Entity.CostCenter;
 import com.PrProcessFlow.PrProcessFlow.Entity.Pr;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,5 +24,15 @@ public interface PrRepo extends JpaRepository<Pr, Integer> {
     Page<Pr> findAllByOrderByIdDesc(Pageable pageable);
     Page<Pr> findByPrStatusInOrderByIdDesc(List<String> statuses, Pageable pageable);
     List<Pr> findByPrStatusInOrderByIdDesc(List<String> statuses);
+    @Query(value = """
+    SELECT * FROM pr pr
+    WHERE pr.id IN (
+        SELECT MAX(p.id) FROM pr p GROUP BY p.store_name
+    )
+    ORDER BY pr.id DESC
+    LIMIT 5
+""", nativeQuery = true)
+    List<Pr> findLast5UniqueStoreName();
+
 
 }

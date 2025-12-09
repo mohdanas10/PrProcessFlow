@@ -65,6 +65,10 @@ public class PrController {
         return this.prServices.deletePr(id);
     }
 
+    @GetMapping("/get-five-pr")
+    public List<Pr> getFivePr(){
+        return this.prServices.getFivePr();
+    }
 
 
 }
